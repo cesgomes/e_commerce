@@ -1,1 +1,1 @@
-Criação dos modelos (tabelas)
+Instalar os templates estáticos
