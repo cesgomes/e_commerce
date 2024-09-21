@@ -1,0 +1,2 @@
+python manage migrate (criar a página e autenticação do admin)
+python createsuperuser (criar o admin, necessário para administrar a página)
