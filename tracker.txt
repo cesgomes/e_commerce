@@ -1,1 +1,1 @@
-Login and Logout functions
+Login and Logout functions.
