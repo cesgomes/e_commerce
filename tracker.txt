@@ -1,1 +1,1 @@
-Criação da funcionalidade de vendas
+Modularização da página principal
