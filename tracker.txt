@@ -1,1 +1,1 @@
-Modularização da página principal
+Login and Logout functions
