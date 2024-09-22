@@ -1,1 +1,1 @@
-Adicionar imagens aos produtos
+Criação da funcionalidade de vendas
