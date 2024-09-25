@@ -19,8 +19,10 @@
                 {% else %}
                 ${{product.price}}
                 {% endif %}
+                <br/>ID: {{product.id}}
                 <br/><br/>
             <a href="{% url "home" %}" class="btn btn-secondary">Back Home</a>
+            <button type="button" value="{{product.id}}" class="btn btn-secondary" id="add-cart">Add to cart</button>
             </center> 
         </div>
         </div>
