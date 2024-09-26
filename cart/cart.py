@@ -39,3 +39,7 @@ class Cart():
         
         #Return products found
         return products       
+    
+    def get_quants(self):
+        quantities = self.cart
+        return quantities
