@@ -1,1 +1,1 @@
-Update Cart Summary
+Funcionalidade de adicionar mais itens a um produto
