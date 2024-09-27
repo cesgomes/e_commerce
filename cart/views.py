@@ -52,6 +52,7 @@ def cart_delete(request):
         # Call delete Function in Cart
         cart.delete(product=product_id)
         response = JsonResponse({'product': product_id})
+        messages.success(request, "Item deleted from cart")
         # return redirect('cart_summary')
         return response
 
@@ -65,4 +66,6 @@ def cart_update(request):
 
         cart.update(product=product_id, quantity=product_qty)
         response = JsonResponse({'qty': product_qty})
+        mensagem = 'Quantity updated for 1 item' if product_qty == 1 else f' Quantity updated for {product_qty} itens'
+        messages.success(request, mensagem)
         return response
