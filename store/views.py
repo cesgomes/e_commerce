@@ -100,3 +100,6 @@ def update_user(request):
     else:
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
+    
+def update_pass(request):
+    return render(request, 'update_pass.html', {})    
