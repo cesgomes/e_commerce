@@ -1,1 +1,1 @@
-Remover item do carrinho
+Adicionar o total (quantidade x Item) ao site
