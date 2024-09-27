@@ -79,3 +79,7 @@ def category(request, foo):
     except:
         messages.success(request, ("Inexistent Category"))
         return redirect(home)
+
+
+def category_summary(request):
+    return render(request, 'category_summary.html', {})
