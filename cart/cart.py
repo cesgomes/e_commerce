@@ -77,5 +77,8 @@ class Cart():
             key = int(key)
             for product in products:
                 if product.id == key:
-                    total += (product.price * value)
+                    if product.is_sale:
+                        total += (product.sale_price * value)
+                    else:
+                        total += (product.price * value)
         return total
