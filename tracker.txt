@@ -1,1 +1,1 @@
-Atualizar a quantidade no carrinho de compras.
+Remover item do carrinho
