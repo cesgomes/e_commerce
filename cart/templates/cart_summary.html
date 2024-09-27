@@ -52,8 +52,9 @@
                                         </div>                                
                                     </div>
                                 <br/><br/>
-                                <a href="{% url "home" %}" class="btn btn-secondary">Home</a>
+
                                 <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update</button>
+                                <button type="button" data-index="{{product.id}}" class="btn btn-danger delte-item">Remove</button>
                             </center> 
                         </div>
                     </div>
@@ -66,9 +67,19 @@
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
     {% endif %}
-    
-
 </div>
+<br/><br/>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <a href="{% url 'home' %}" class="btn btn-secondary btn-lg">Home</a>
+        </div>
+    </div>
+</div>
+<br/><br/>
+
+
+
 <script>
 
     // Check if button pressed
