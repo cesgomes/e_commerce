@@ -1,1 +1,1 @@
-Adicionar o total (quantidade x Item) ao site.
+Category Summary Page
