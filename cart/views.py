@@ -3,8 +3,9 @@ from .cart import Cart
 from store.models import Product
 from django.http import JsonResponse
 
+
 def cart_summary(request):
-    #get the cart
+    # get the cart
     cart = Cart(request)
     cart_products = cart.get_prods
     quantities = cart.get_quants
@@ -12,30 +13,38 @@ def cart_summary(request):
 
 
 def cart_add(request):
-    #Get the cart
+    # Get the cart
     cart = Cart(request)
-    #Test for post
+    # Test for post
     if request.POST.get('action') == 'post':
-        #Get stuff
+        # Get stuff
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
-        
-        #Lookup product on database
-        product = get_object_or_404(Product,id=product_id)
-        #Save to session (cookie)
+
+        # Lookup product on database
+        product = get_object_or_404(Product, id=product_id)
+        # Save to session (cookie)
         cart.add(product=product, quantity=product_qty)
-        
+
         # Get Cart Quantity
-        cart_quantity = cart.__len__()                
-        
+        cart_quantity = cart.__len__()
+
         # Return response
-        #response = JsonResponse({'Product Name': product.name})
+        # response = JsonResponse({'Product Name': product.name})
         response = JsonResponse({'qty': cart_quantity})
         return response
 
 
 def cart_delete(request):
-    pass
+    cart = Cart(request)
+    if request.POST.get('action') == 'post':
+        # Get stuff
+        product_id = int(request.POST.get('product_id'))
+        # Call delete Function in Cart
+        cart.delete(product=product_id)
+        response = JsonResponse({'product': product_id})
+        # return redirect('cart_summary')
+        return response
 
 
 def cart_update(request):
@@ -45,6 +54,6 @@ def cart_update(request):
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
 
-        cart.update(product=product_id, quantity = product_qty)
-        response = JsonResponse({'qty':product_qty})
+        cart.update(product=product_id, quantity=product_qty)
+        response = JsonResponse({'qty': product_qty})
         return response
