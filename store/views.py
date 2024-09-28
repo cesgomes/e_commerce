@@ -107,8 +107,14 @@ def update_pass(request):
         
         #Did They fill out the form
         if request.method == 'POST':
-            #Do Stuff
-            pass
+            form=ChangePasswordForm(current_user, request.POST)
+            #Is the form valid?
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your password has been updated!")
+                login(request, current_user)
+                return redirect('home')
+                            
         else:
             form = ChangePasswordForm(current_user)
     else:
