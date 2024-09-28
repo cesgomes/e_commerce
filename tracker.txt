@@ -1,1 +1,1 @@
-Update user profile password
+Extend User Profile
