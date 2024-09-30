@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from .models import Product, Category, Profile
 from django.contrib.auth import authenticate, login, logout
@@ -72,10 +73,10 @@ def category(request, foo):
     foo = foo.replace('-', ' ')
     # Pega a categoria da URL
     try:
-        #Procurar a categoria
-        category=Category.objects.get(name=foo)
-        product=Product.objects.filter(category=category)
-        return render(request, 'category.html',{'products':product, 'category':category})
+        # Procurar a categoria
+        category = Category.objects.get(name=foo)
+        product = Product.objects.filter(category=category)
+        return render(request, 'category.html', {'products': product, 'category': category})
     except:
         messages.success(request, ("Inexistent Category"))
         return redirect(home)
@@ -85,30 +86,32 @@ def category_summary(request):
     categories = Category.objects.all()
     return render(request, 'category_summary.html', {"categories": categories})
 
+
 def update_user(request):
     if request.user.is_authenticated:
         current_user = User.objects.get(id=request.user.id)
-        user_form = UpdateUserForm(request.POST or None,instance=current_user)
-        
+        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+
         if user_form.is_valid():
             user_form.save()
-            
+
             login(request, current_user)
             messages.success(request, "Profile Updated")
             return redirect('home')
-        return render(request,'update_user.html', {'user_form':user_form})
+        return render(request, 'update_user.html', {'user_form': user_form})
     else:
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
-    
+
+
 def update_pass(request):
     if request.user.is_authenticated:
-        current_user=request.user 
-        
-        #Did They fill out the form
+        current_user = request.user
+
+        # Did They fill out the form
         if request.method == 'POST':
-            form=ChangePasswordForm(current_user, request.POST)
-            #Is the form valid?
+            form = ChangePasswordForm(current_user, request.POST)
+            # Is the form valid?
             if form.is_valid():
                 form.save()
                 messages.success(request, "Your password has been updated!")
@@ -116,15 +119,16 @@ def update_pass(request):
                 return redirect('update_user')
             else:
                 for error in list(form.errors.values()):
-                    messages.error(request,error)
+                    messages.error(request, error)
                 return redirect('update_pass')
-                            
+
         else:
             form = ChangePasswordForm(current_user)
     else:
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
-    return render(request, 'update_pass.html', {'form':form})    
+    return render(request, 'update_pass.html', {'form': form})
+
 
 def update_info(request):
     if request.user.is_authenticated:
@@ -139,19 +143,20 @@ def update_info(request):
     else:
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
-    
+
+
 def search(request):
-    #Determina se foi feita alguma pesquisa
+    # Determina se foi feita alguma pesquisa
     if request.method == "POST":
         searched = request.POST['searched']
-        #Query the Products DB model
-        searched = Product.objects.filter(name__icontains=searched)
-        #Test for null
+        # Query the Products DB model
+        searched = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
+        # Test for null
         if not searched:
             messages.success(
                 request, "That product does not exists with the search criteria. Please try again")
             return render(request, 'search.html', {})
         else:
-            return render(request, 'search.html', {'searched':searched})
+            return render(request, 'search.html', {'searched': searched})
     else:
         return render(request, 'search.html', {})
