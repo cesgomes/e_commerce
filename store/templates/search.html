@@ -12,8 +12,27 @@
 <div class="container">
   <div class="row">
     <center>
-      <div class="col-8">
+      <div class="col-10">
         <br/><br/><br/>
+
+        <div class="card">
+        <div class="card-header">
+            Search Products
+        </div>
+        <div class="card-body">
+
+            <form method='POST' action={% url "search" %}>
+                {% csrf_token %}
+                <div class="form-group">
+                <input type="text" class="form-control" aria-describedby="Search For Product" placeholder="Search" name='searched'>
+            </div>
+            <p></p>
+            <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+
+        </div>
+        </div>
+
 
         <br /><br />
       </div>
