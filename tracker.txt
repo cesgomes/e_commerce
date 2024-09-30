@@ -1,1 +1,1 @@
-Extend User Profile
+User Profile Page
