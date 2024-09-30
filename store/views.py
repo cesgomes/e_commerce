@@ -139,3 +139,6 @@ def update_info(request):
     else:
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
+    
+    def search(request):
+        return render(request, 'search.html', {})
