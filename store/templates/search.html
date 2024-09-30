@@ -34,10 +34,11 @@
         </div>
         <br /><br />
         {% if searched %}
-        
-        {{searched}}
-        <br /><br />
+            {% for item in searched  %}
+                {{item}}<br/>
+            {% endfor %}        
         {% endif %}
+        <br /><br />
       </div>
     </center>
   </div>
