@@ -141,4 +141,9 @@ def update_info(request):
         return redirect('home')
     
 def search(request):
-    return render(request, 'search.html', {})
+    #Determina se foi feita alguma pesquisa
+    if request.method == "POST":
+        searched = request.POST['searched']
+        return render(request, 'search.html', {'searched':searched})
+    else:
+        return render(request, 'search.html', {})
