@@ -125,3 +125,6 @@ def update_pass(request):
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
     return render(request, 'update_pass.html', {'form':form})    
+
+def update_info(request):
+    pass
