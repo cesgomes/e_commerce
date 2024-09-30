@@ -127,4 +127,16 @@ def update_pass(request):
     return render(request, 'update_pass.html', {'form':form})    
 
 def update_info(request):
-    pass
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        form = UpdateUserForm(request.POST or None, instance=current_user)
+
+        if form.is_valid():
+            form.save()
+            login(request, current_user)
+            messages.success(request, "Profile Info Updated")
+            return redirect('home')
+        return render(request, 'update_info.html', {'form': form})
+    else:
+        messages.success(request, "You must be logged in to access that page")
+        return redirect('home')
