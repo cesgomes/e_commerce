@@ -17,6 +17,28 @@ class Cart():
         #Make sure cart is available on all pages of site
         self.cart = cart
         
+    def db_add(self, product, quantity):
+        product_id = str(product)
+        product_qty = str(quantity)
+        if product_id in self.cart:
+            pass
+        else:
+            # self.cart[product.id] = {'price': str(product.price) }
+            self.cart[product] = int(product_qty)
+
+        self.session.modified = True
+        # Deal with logged in user
+
+        if self.request.user.is_authenticated:
+            # Get the current User Profile
+            current_user = Profile.objects.filter(
+                user__id=self.request.user.id)
+            # Convert aspas simples para aspas duplas
+            carty = str(self.cart)
+            carty = carty.replace("'", '"')
+            # Save carty to the profile model
+            current_user.update(old_cart=str(carty))
+            
     def add(self, product, quantity):
         product_id = str(product.id)
         product_qty = str(quantity)
