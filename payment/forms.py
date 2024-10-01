@@ -16,7 +16,7 @@ class ShippingForm(forms.ModelForm):
         fields=['shipping_full_name',
                 'shipping_email',
                 'shipping_address1',
-                'shipping_addres2',
+                'shipping_address2',
                 'shipping_city',
                 'shipping_state',
                 'shipping_zipcode',
