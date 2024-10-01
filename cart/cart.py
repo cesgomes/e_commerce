@@ -1,9 +1,11 @@
-from store.models import Product
+from store.models import Product, Profile
 
 class Cart():
     
     def __init__(self, request):
         self.session = request.session
+        # Get Request
+        self.request = request
         
         #Get current session key, if exists
         cart = self.session.get('session_key')
@@ -25,6 +27,16 @@ class Cart():
             self.cart[product.id] = int(product_qty)
             
         self.session.modified = True
+        #Deal with logged in user
+        
+        if self.request.user.is_authenticated:
+            # Get the current User Profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert aspas simples para aspas duplas
+            carty=str(self.cart)
+            carty = carty.replace("'", '"')
+            # Save carty to the profile model
+            current_user.update(old_cart=str(carty))
         
     def __len__(self):
         return len(self.cart)     
