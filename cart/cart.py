@@ -90,6 +90,16 @@ class Cart():
         
         self.session.modified = True
         thing = self.cart
+        
+        if self.request.user.is_authenticated:
+            # Get the current User Profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # Convert aspas simples para aspas duplas
+            carty=str(self.cart)
+            carty = carty.replace("'", '"')
+            # Save carty to the profile model
+            current_user.update(old_cart=str(carty))
+        
         return thing
 
     def delete(self, product):
