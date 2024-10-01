@@ -3,14 +3,14 @@ from django.contrib.auth.models import User
 
 class ShippingAddress(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
-    full_name=models.CharField(max_length=255)
-    email= models.EmailField(max_length=255)
-    address1 = models.CharField(max_length=255)
-    address2 = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=50, null=True, blank=True)
-    zipcode = models.CharField(max_length=20, null=True, blank=True)
-    country = models.CharField(max_length=100)
+    shipping_full_name=models.CharField(max_length=255)
+    shipping_email = models.EmailField(max_length=255)
+    shipping_address1 = models.CharField(max_length=255)
+    shipping_address2 = models.CharField(max_length=255)
+    shipping_city = models.CharField(max_length=100)
+    shipping_state = models.CharField(max_length=50, null=True, blank=True)
+    shipping_zipcode = models.CharField(max_length=20, null=True, blank=True)
+    shipping_country = models.CharField(max_length=100)
     
     #Dont plurarize address
     class Meta:
