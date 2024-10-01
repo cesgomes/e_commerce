@@ -46,7 +46,7 @@ class Cart():
             pass
         else:
             #self.cart[product.id] = {'price': str(product.price) }
-            self.cart[product.id] = int(product_qty)
+            self.cart[product_id] = int(product_qty)
             
         self.session.modified = True
         #Deal with logged in user
