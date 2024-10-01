@@ -155,13 +155,14 @@ def update_info(request):
         # Get current user Id
         current_user = Profile.objects.get(user__id=request.user.id)
         # Get current user's shipping info
-        shipping_user = ShippingAddress.objects.get(id=request.user.id)
+        shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
         #Get original user form
         form = UserInfoForm(request.POST or None, instance=current_user)
         #Get user´s shipping info
         shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
-        if form.is_valid():
+        if form.is_valid() or shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             messages.success(request, "Profile Info Updated")
             return redirect('home')
         return render(request, 'update_info.html', {'form': form, 'shipping_form':shipping_form})
