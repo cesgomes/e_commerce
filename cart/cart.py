@@ -34,7 +34,7 @@ class Cart():
             current_user = Profile.objects.filter(user__id=self.request.user.id)
             # Convert aspas simples para aspas duplas
             carty=str(self.cart)
-            carty = carty.replace("\'", "\"")
+            carty = carty.replace("'", '"')
             # Save carty to the profile model
             current_user.update(old_cart=str(carty))
         
