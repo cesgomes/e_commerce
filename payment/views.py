@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from cart.cart import Cart
 
 def payment_success(request):
     """
@@ -14,13 +14,12 @@ def payment_success(request):
     return render(request, "payment/payment_success.html", {})
 
 def checkout(request):
-    """
-    Handles the checkout process by rendering the checkout page.
+    # get the cart
+    cart = Cart(request)
+    cart_products = cart.get_prods
+    quantities = cart.get_quants
+    totals = cart.cart_total()
+    return render(request, "payment/checkout.html", {"cart_products": cart_products,
+                                                 "quantities": quantities,
+                                                 "totals": totals})
 
-    Args:
-        request: The HTTP request object.
-
-    Returns:
-        HttpResponse: The rendered checkout page.
-    """
-    return render(request, "payment/checkout.html", {})
