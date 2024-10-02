@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from cart.cart import Cart
-from .forms import ShippingForm, ShippingAddress
+from .forms import ShippingForm, PaymentForm
+from payment.models import ShippingAddress
 from django.contrib import messages
 
 def payment_success(request):
@@ -59,7 +60,8 @@ def billing_info(request):
         cart_products = cart.get_prods
         quantities = cart.get_quants
         totals = cart.cart_total()
-        
+        billing_form = PaymentForm()
+
         #Check to validate if user is logged in
         if request.user.is_authenticated:
             return render(request,
@@ -67,12 +69,20 @@ def billing_info(request):
                           "cart_products": cart_products,
                           "quantities": quantities,
                           "shipping_info": request.POST,
+                          "billing_form": billing_form,
                           "totals": totals
         })
         else:
             #Not logged in
-            pass
-        
+            return render(request,
+                          "payment/billing_info.html", {
+                              "cart_products": cart_products,
+                              "quantities": quantities,
+                              "shipping_info": request.POST,
+                              "billing_form": billing_form,
+                              "totals": totals
+                          })
+
         shipping_form = request.POST
         return render(request, "payment/billing_info.html", {
             "cart_products": cart_products,
