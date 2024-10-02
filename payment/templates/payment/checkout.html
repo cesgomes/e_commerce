@@ -39,19 +39,23 @@
                     <strong>Total: $ {{totals}}</strong><br/>
                     <a href='{% url "cart_summary" %}' class='btn btn-sm btn-outline-secondary'>Update Items</a>
                 </div>
-
+            </div>    
+            <br/><br/>
+                        
+            <div class="card">
+            <div class="card-header">
+                Shipping Info
+            </div>
+            <div class="card-body">
+                {{shipping_form.as_p}}
+            </div>
             </div>            
+            <br/>
+            <a href="http://" class='btn btn-secondary'>Continue to billing</a>   
         </div>
-    </div>
-</div>
-<br/><br/>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <a href="{% url 'home' %}" class="btn btn-secondary btn-lg">Home</a>
         </div>
-    </div>
 </div>
+
 <br/><br/>
 
 {% endblock %}
