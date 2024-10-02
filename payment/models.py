@@ -25,7 +25,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    shipping_address = models.CharField(max_length=1000)
+    shipping_address = models.TextField(max_length=1000)
     amount_paid = models.DecimalField(max_digits=7, decimal_places=2)
     date_ordered = models.DateField(auto_now_add=True)
     
@@ -35,7 +35,7 @@ class Order(models.Model):
 # Create Order Items Model
 class OrderItem(models.Model):
     #Foreign keys
-    user = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
