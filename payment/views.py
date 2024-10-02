@@ -53,3 +53,15 @@ def checkout(request):
         "shipping_form": shipping_form,
         "totals": totals
     })
+def billing_info(request):
+    cart = Cart(request)
+    cart_products = cart.get_prods
+    quantities = cart.get_quants
+    totals = cart.cart_total()
+    shipping_form = request.POST
+    return render(request, "payment/billing_info.html", {
+        "cart_products": cart_products,
+        "quantities": quantities,
+        "shipping_form": shipping_form,
+        "totals": totals
+    })

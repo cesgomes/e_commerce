@@ -12,5 +12,6 @@ urlpatterns = [
     # Esta URL mapeia para a função 'checkout' na views.py
     # Quando o usuário acessa 'checkout/', a função 'checkout' será chamada
     path('checkout/', views.checkout, name="checkout"),
+    path('billing_info/', views.billing_info, name="billing_info"),
 ]
 
