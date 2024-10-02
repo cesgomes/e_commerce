@@ -26,11 +26,11 @@
                             <strong>{{ item.name }}:</strong>
                             <!-- Display sale price if item is on sale, otherwise display regular price -->
                             <span>
-                                {% if item.is_sale  %}
-                                    $ {{item.sale_price}}
-                                {% else %}               
-                                    $ {{item.price}}         
-                                {% endif %}                            
+                                {% if item.is_sale %}
+                                    $ {{ item.sale_price }}
+                                {% else %}
+                                    $ {{ item.price }}
+                                {% endif %}
                             </span>
                             <br/>
                             <small>Quantity: 
@@ -54,32 +54,35 @@
                     Shipping Info
                 </div>
                 <div class="card-body">
-                        Name: {{ shipping_info.shipping_full_name }}<br/>
-                        Email: {{ shipping_info.shipping_email }}<br/>
-                        Address: {{ shipping_info.shipping_address1 }}<br/>
-                                 {{ shipping_info.shipping_address2 }}<br/>
-                        City: {{ shipping_info.shipping_city }}<br/>
-                        State: {{ shipping_info.shipping_state }}<br/>
-                        ZIP Code: {{ shipping_info.shipping_zipcode }}<br/>
-                        Country: {{ shipping_info.shipping_country }}<br/>
-                        <br/>
-                        <a href="{% url "checkout" %}"class="btn btn-outline-secondary">Update Shipping Address</a>                        
-                    </div>
+                    <!-- Display shipping information -->
+                    Name: {{ shipping_info.shipping_full_name }}<br/>
+                    Email: {{ shipping_info.shipping_email }}<br/>
+                    Address: {{ shipping_info.shipping_address1 }}<br/>
+                             {{ shipping_info.shipping_address2 }}<br/>
+                    City: {{ shipping_info.shipping_city }}<br/>
+                    State: {{ shipping_info.shipping_state }}<br/>
+                    ZIP Code: {{ shipping_info.shipping_zipcode }}<br/>
+                    Country: {{ shipping_info.shipping_country }}<br/>
+                    <br/>
+                    <a href="{% url "checkout" %}" class="btn btn-outline-secondary">Update Shipping Address</a>
                 </div>
-                <br/>
+            </div>
+            <br/>
 
+            <!-- Billing Info Card -->
             <div class="card">
                 <div class="card-header">
                     Billing Info
                 </div>
                 <div class="card-body">
-                       {{billing_form.as_p}}
-                        <br/>                 
-                    </div>
+                    <!-- Render billing form -->
+                    {{ billing_form.as_p }}
+                    <br/>
                 </div>
-                <br/>
-                <!-- Continue to Billing Button -->
-                <a href="#" class='btn btn-secondary'>Pay Now</a>
+            </div>
+            <br/>
+            <!-- Continue to Billing Button -->
+            <a href="#" class='btn btn-secondary'>Pay Now</a>
 
         </div>
     </div>
