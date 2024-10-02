@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from cart.cart import Cart
-from .forms import ShippingForm, ShippingAddress
+from .forms import ShippingForm, PaymentForm
+from payment.models import ShippingAddress
+from django.contrib import messages
 
 
 def payment_success(request):
@@ -53,3 +55,47 @@ def checkout(request):
         "shipping_form": shipping_form,
         "totals": totals
     })
+
+
+def billing_info(request):
+    """
+    Handles the billing information process, including displaying the cart contents,
+    and managing the billing form for both authenticated users and guests.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the billing information HTML page with cart details and billing form.
+    """
+    if request.method == "POST":
+        # Get the cart instance for the current session
+        cart = Cart(request)
+        cart_products = cart.get_prods
+        quantities = cart.get_quants
+        totals = cart.cart_total()
+        billing_form = PaymentForm()
+
+        # Check if the user is authenticated
+        if request.user.is_authenticated:
+            # Render the billing info page with cart details and billing form for authenticated users
+            return render(request, "payment/billing_info.html", {
+                "cart_products": cart_products,
+                "quantities": quantities,
+                "shipping_info": request.POST,
+                "billing_form": billing_form,
+                "totals": totals
+            })
+        else:
+            # Render the billing info page with cart details and billing form for guests
+            return render(request, "payment/billing_info.html", {
+                "cart_products": cart_products,
+                "quantities": quantities,
+                "shipping_info": request.POST,
+                "billing_form": billing_form,
+                "totals": totals
+            })
+    else:
+        # If the request method is not POST, deny access and redirect to home
+        messages.error(request, 'Access Denied')
+        return redirect('home')
