@@ -48,19 +48,20 @@
                 </div>
             </div>
 
+            <form method="POST" action="{% url "billing_info" %}">
             <!-- Shipping Info Card -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    Shipping Info
-                </div>
-                <div class="card-body">
-                    <form action="POST" action="{% url "billing_info" %}">
-                        {% csrf_token %}
-                        {{ shipping_form.as_p }}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Shipping Info
                     </div>
-                </div>
+                    <div class="card-body">
+                    </div>
+                </div>            {% csrf_token %}
+                        {{ shipping_form.as_p }}
                 <!-- Continue to Billing Button -->
-                <a href="#" class='btn btn-secondary'>Continue to billing</a>
+                <button type="submit" class='btn btn-secondary'>
+                    Continue to billing
+                </button>
             </form>
 
         </div>
