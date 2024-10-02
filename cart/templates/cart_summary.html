@@ -61,7 +61,11 @@
                 </div>
             </div>   
         {% endfor %}
-        <h3>TOTAL: <strong>$ {{totals}} </strong></h3><br/><br/><br/>
+        <div align="right">
+            <h3>TOTAL: <strong>$ {{totals}} </strong></h3>
+            <a href="{% url "checkout" %}"class="btn btn-success">Checkout</a>
+        </div>
+        <br/><br/><br/>
     {% else %}
             <div class="container">There's nothing in your cart</div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -79,7 +83,7 @@
 <br/><br/>
 
 
-
+{% endblock %}
 <script>
 // Update Cart
 $(document).on('click', '.update-cart', function(e){
@@ -134,4 +138,3 @@ $(document).on('click', '.update-cart', function(e){
     });
 })
 </script>
-{% endblock %}
