@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<!---->
+<!-- Header Section -->
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
@@ -9,53 +9,59 @@
         </div>
     </div>
 </header>
-<br/>
-<div class="container">
-    <div class="row">   
+
+<!-- Main Container -->
+<div class="container my-5">
+    <div class="row">
         <div class="col-md-6 offset-md-3">
 
-            <div class="card">
+            <!-- Order Summary Card -->
+            <div class="card mb-4">
                 <div class="card-header">
                     Order Summary
                 </div>
                 <div class="card-body">
                     {% for item in cart_products %}
-                        {{item.name}}:
-                        {% if item.is_sale  %}
-                            $ {{item.sale_price}}
-                        {% else %}               
-                            $ {{item.price}}         
-                        {% endif %}
-                        <br/>
-                        <small>Quantity:                      
-                        {% for key, value in quantities.items  %}
-                            {% if key == item.id|slugify  %}
-                                {{value}}
-                            {% endif %}
-                        {% endfor %}
-                        </small>   
-                        <br/><br/>
+                        <div class="mb-2">
+                            <strong>{{ item.name }}:</strong>
+                            <!-- Display sale price if item is on sale, otherwise display regular price -->
+                            <span>
+                                {% if item.is_sale  %}
+                                    $ {{item.sale_price}}
+                                {% else %}               
+                                    $ {{item.price}}         
+                                {% endif %}                            
+                            </span>
+                            <br/>
+                            <small>Quantity: 
+                                <!-- Loop through quantities to find the matching item id -->
+                                {% for key, value in quantities.items %}
+                                    {% if key == item.id|slugify %}
+                                        {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </small>
+                        </div>
                     {% endfor %}
-                    <strong>Total: $ {{totals}}</strong><br/>
-                    <a href='{% url "cart_summary" %}' class='btn btn-sm btn-outline-secondary'>Update Items</a>
+                    <strong>Total: $ {{ totals }}</strong><br/>
+                    <a href='{% url "cart_summary" %}' class='btn btn-sm btn-outline-secondary mt-2'>Update Items</a>
                 </div>
-            </div>    
-            <br/><br/>
-                        
-            <div class="card">
-            <div class="card-header">
-                Shipping Info
             </div>
-            <div class="card-body">
-                {{shipping_form.as_p}}
-            </div>
-            </div>            
-            <br/>
-            <a href="http://" class='btn btn-secondary'>Continue to billing</a>   
-        </div>
-        </div>
-</div>
 
-<br/><br/>
+            <!-- Shipping Info Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Shipping Info
+                </div>
+                <div class="card-body">
+                    {{ shipping_form.as_p }}
+                </div>
+            </div>
+
+            <!-- Continue to Billing Button -->
+            <a href="http://" class='btn btn-secondary'>Continue to billing</a>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
