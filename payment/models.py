@@ -4,6 +4,8 @@ from store.models import Product
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 import datetime
+
+
 class ShippingAddress(models.Model):
     """
     Modelo para armazenar endereços de envio dos usuários.
@@ -24,6 +26,8 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return f'Shipping Address - {self.id}'
+
+# Função para criar um endereço de envio padrão quando um novo usuário é criado
 
 
 def create_shipping(sender, instance, created, **kwargs):
@@ -46,7 +50,7 @@ class Order(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    # Consider using a ForeignKey to ShippingAddress
+    # Consider using a ForeignKey to ShippingAddress for better data integrity
     shipping_address = models.TextField(max_length=1000)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
     date_ordered = models.DateField(auto_now_add=True)
@@ -56,13 +60,18 @@ class Order(models.Model):
     def __str__(self):
         return f'Order - {self.id}'
 
+# Sinal para definir a data de envio quando o pedido é marcado como enviado
+
+
 @receiver(pre_save, sender=Order)
 def set_shipped_date_on_update(sender, instance, **kwargs):
     if instance.pk:
-        now=datetime.datetime.now()
+        now = datetime.datetime.now()
         obj = sender._default_manager.get(pk=instance.pk)
+        # Define a data de envio apenas se o status de envio mudou para True
         if instance.shipped and not obj.shipped:
             instance.date_shipped = now
+
 
 class OrderItem(models.Model):
     """
