@@ -29,7 +29,8 @@
             {% for item in orders %}
             <tr>
               <!-- Exibe o ID do pedido -->
-              <td>{{item.id}}</td>
+              <td><a href="{% url "orders" item.id %}">{{ item.id }}</a></td>
+
               <!-- Exibe o preço pago, formatado com símbolo de dólar -->
               <td>$ {{item.amount_paid}}</td>
               <!-- Exibe o email do cliente -->

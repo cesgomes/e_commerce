@@ -29,6 +29,7 @@ urlpatterns = [
     # URL para o dashboard de pedidos não enviados
     # Quando o usuário acessa 'not_shipped_dash/', a função 'not_shipped_dash' será chamada
     path('not_shipped_dash/', views.not_shipped_dash, name="not_shipped_dash"),
+    path('orders/<int:pk>', views.orders, name="orders")
 ]
 
 # Notas de melhoria:
