@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from store.models import Product
 
-
 def payment_success(request):
     """
     Handles the successful payment response.
@@ -18,7 +17,6 @@ def payment_success(request):
         HttpResponse: Renders the payment success HTML page.
     """
     return render(request, "payment/payment_success.html", {})
-
 
 def checkout(request):
     """
@@ -41,11 +39,9 @@ def checkout(request):
     # Check if the user is authenticated
     if request.user.is_authenticated:
         # If authenticated, get the user's shipping address or return 404 if not found
-        shipping_user = get_object_or_404(
-            ShippingAddress, user__id=request.user.id)
+        shipping_user = get_object_or_404(ShippingAddress, user__id=request.user.id)
         # Bind the shipping form to the user's shipping address
-        shipping_form = ShippingForm(
-            request.POST or None, instance=shipping_user)
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
     else:
         # If not authenticated, provide an empty shipping form for guest checkout
         shipping_form = ShippingForm(request.POST or None)
@@ -57,7 +53,6 @@ def checkout(request):
         "shipping_form": shipping_form,
         "totals": totals
     })
-
 
 def billing_info(request):
     """
@@ -95,7 +90,6 @@ def billing_info(request):
         # If the request method is not POST, deny access and redirect to home
         messages.error(request, 'Access Denied')
         return redirect('home')
-
 
 def process_order(request):
     """
@@ -173,8 +167,16 @@ def process_order(request):
         messages.error(request, "Access Denied")
         return redirect('home')
 
-
 def not_shipped_dash(request):
+    """
+    Displays a dashboard of orders that have not been shipped yet.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the not shipped dashboard HTML page with order details.
+    """
     if not request.user.is_authenticated: 
         messages.error(request, "Precisa estar autenticado")
         return redirect('home')
@@ -183,9 +185,18 @@ def not_shipped_dash(request):
         return redirect('home')
 
     order = Order.objects.filter(shipped=False)
-    return render(request, 'payment/not_shipped_dash.html', {'orders':order})
-        
+    return render(request, 'payment/not_shipped_dash.html', {'orders': order})
+
 def shipped_dash(request):
+    """
+    Displays a dashboard of orders that have been shipped.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the shipped dashboard HTML page with order details.
+    """
     if not request.user.is_authenticated:
         messages.error(request, "Precisa estar autenticado")
         return redirect('home')
@@ -194,4 +205,4 @@ def shipped_dash(request):
         return redirect('home')
 
     order = Order.objects.filter(shipped=True)
-    return render(request, 'payment/shipped_dash.html', {'orders':order}) 
+    return render(request, 'payment/shipped_dash.html', {'orders': order})
