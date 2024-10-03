@@ -208,6 +208,16 @@ def shipped_dash(request):
     return render(request, 'payment/shipped_dash.html', {'orders': order})
 
 def orders(request, pk):
+    """
+    Displays details of a specific order.
+
+    Args:
+        request: The HTTP request object.
+        pk: Primary key of the order to be displayed.
+
+    Returns:
+        HttpResponse: Renders the order details HTML page.
+    """
     if not request.user.is_authenticated:
         messages.error(request, "Precisa estar autenticado")
         return redirect('home')
@@ -215,6 +225,6 @@ def orders(request, pk):
         messages.error(request, "Sem permissão para acessar esta área")
         return redirect('home')
 
-    order = Order.objects.get(id=pk)
+    order = get_object_or_404(Order, id=pk)
     orderitem = OrderItem.objects.filter(order=pk)
-    return render(request, 'payment/orders.html', {'order': order, 'item': orderitem}) 
+    return render(request, 'payment/orders.html', {'order': order, 'item': orderitem})

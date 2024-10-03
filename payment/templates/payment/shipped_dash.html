@@ -1,26 +1,24 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block content %}
 
 <div class="container">
-  <div class="row">
-    <!-- Centraliza o conteúdo horizontalmente -->
-    <center>
-      <div class="col-8">
-        <!-- Espaçamento vertical -->
-        <br/><br/><br/>
+  <div class="row justify-content-center"> <!-- Centraliza o conteúdo horizontalmente -->
+    <div class="col-8">
+      <!-- Espaçamento vertical usando classes do Bootstrap -->
+      <div class="my-5">
 
         <!-- Título da tabela -->
         <h3>Shipped Items</h3>
         
         <!-- Tabela estilizada com Bootstrap -->
-        <table class="table table-striped table-hover table-bordered">
+        <table class="table table-striped table-hover table-bordered" aria-label="Tabela de itens enviados">
           <!-- Cabeçalho da tabela com fundo escuro -->
           <thead class="table-dark">
             <tr>
-              <th scope="col">Order</th>
-              <th scope="col">Price</th>
-              <th scope="col">Customer Email</th>
-              <th scope="col">Date Shipped</th>
+              <th scope="col">Order</th> <!-- Cabeçalho para ID do pedido -->
+              <th scope="col">Price</th> <!-- Cabeçalho para preço -->
+              <th scope="col">Customer Email</th> <!-- Cabeçalho para email do cliente -->
+              <th scope="col">Date Shipped</th> <!-- Cabeçalho para data de envio -->
             </tr>
           </thead>
           <!-- Corpo da tabela -->
@@ -28,23 +26,23 @@
             <!-- Loop através dos itens de pedidos -->
             {% for item in orders %}
             <tr>
-              <!-- Exibe o ID do pedido -->
-              <td><a href="{% url "orders" item.id %}">{{ item.id }}</a></td>
+              <!-- Exibe o ID do pedido com link para detalhes do pedido -->
+              <td><a href="{% url "orders" item.id %}" aria-label="Detalhes do pedido {{ item.id }}">{{ item.id }}</a></td>
 
               <!-- Exibe o preço pago, formatado com símbolo de dólar -->
-              <td>$ {{item.amount_paid}}</td>
+              <td>$ {{ item.amount_paid }}</td>
               <!-- Exibe o email do cliente -->
-              <td>{{item.email}}</td>
+              <td>{{ item.email }}</td>
               <!-- Exibe a data de envio -->
-              <td>{{item.date_shipped}}</td>
+              <td>{{ item.date_shipped }}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
-        <!-- Espaçamento vertical -->
-        <br /><br />
+        <!-- Espaçamento vertical usando classes do Bootstrap -->
+        <div class="my-5"></div>
       </div>
-    </center>
+    </div>
   </div>
 </div>
 
