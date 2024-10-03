@@ -4,33 +4,27 @@
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <!-- Main heading for the billing information page -->
-            <h1 class="display-4 fw-bolder">Billing Info</h1>
-            <!-- Subheading prompting user to enter payment details -->
-            <p class="lead fw-normal text-white-50 mb-0">Enter your Payment...</p>
+            <h1 class="display-4 fw-bolder">Processing Order...</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Temporary page...</p>
         </div>
     </div>
 </header>
 
-<!-- Main Container for the content -->
+<!-- Main Container -->
 <div class="container my-5">
     <div class="row">
-        <!-- Center the content on the page -->
         <div class="col-md-6 offset-md-3">
 
             <!-- Order Summary Card -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <!-- Header for the order summary section -->
                     Order Summary
                 </div>
                 <div class="card-body">
-                    <!-- Loop through each product in the cart -->
                     {% for item in cart_products %}
                         <div class="mb-2">
-                            <!-- Display the product name -->
                             <strong>{{ item.name }}:</strong>
-                            <!-- Display sale price if applicable, otherwise regular price -->
+                            <!-- Display sale price if item is on sale, otherwise display regular price -->
                             <span>
                                 {% if item.is_sale %}
                                     $ {{ item.sale_price }}
@@ -40,7 +34,7 @@
                             </span>
                             <br/>
                             <small>Quantity: 
-                                <!-- Find and display the quantity for the current item -->
+                                <!-- Loop through quantities to find the matching item id -->
                                 {% for key, value in quantities.items %}
                                     {% if key == item.id|slugify %}
                                         {{ value }}
@@ -49,9 +43,7 @@
                             </small>
                         </div>
                     {% endfor %}
-                    <!-- Display the total price of the cart -->
                     <strong>Total: $ {{ totals }}</strong><br/>
-                    <!-- Link to update items in the cart -->
                     <a href='{% url "cart_summary" %}' class='btn btn-sm btn-outline-secondary mt-2'>Update Items</a>
                 </div>
             </div>
@@ -59,11 +51,10 @@
             <!-- Shipping Info Card -->
             <div class="card">
                 <div class="card-header">
-                    <!-- Header for the shipping information section -->
                     Shipping Info
                 </div>
                 <div class="card-body">
-                    <!-- Display the shipping information -->
+                    <!-- Display shipping information -->
                     Name: {{ shipping_info.shipping_full_name }}<br/>
                     Email: {{ shipping_info.shipping_email }}<br/>
                     Address: {{ shipping_info.shipping_address1 }}<br/>
@@ -73,7 +64,6 @@
                     ZIP Code: {{ shipping_info.shipping_zipcode }}<br/>
                     Country: {{ shipping_info.shipping_country }}<br/>
                     <br/>
-                    <!-- Link to update the shipping address -->
                     <a href="{% url "checkout" %}" class="btn btn-outline-secondary">Update Shipping Address</a>
                 </div>
             </div>
@@ -82,22 +72,19 @@
             <!-- Billing Info Card -->
             <div class="card">
                 <div class="card-header">
-                    <!-- Header for the billing information section -->
                     Billing Info
                 </div>
                 <div class="card-body">
-                    <!-- Form to process the order -->
                     <form method="POST" action="{% url "process_order" %}">
                         {% csrf_token %}
-                        <!-- Render the billing form fields -->
+                        <!-- Render billing form -->
                         {{ billing_form.as_p }}
                         <br/>
+                        <!-- Continue to Billing Button -->
+                        <button type='submit' class='btn btn-secondary'>Pay Now</button>
+                    </form>
                 </div>
             </div>
-            <br/>
-            <!-- Button to submit the form and proceed with payment -->
-            <button type='submit' class='btn btn-secondary'>Pay Now</button>
-                    </form>
         </div>
     </div>
 </div>
