@@ -77,16 +77,14 @@
                 <div class="card-body">
                     <form method="POST" action="{% url "process_order" %}">
                         {% csrf_token %}
-
-                    <!-- Render billing form -->
-                    {{ billing_form.as_p }}
-                    <br/>
+                        <!-- Render billing form -->
+                        {{ billing_form.as_p }}
+                        <br/>
+                        <!-- Continue to Billing Button -->
+                        <button type='submit' class='btn btn-secondary'>Pay Now</button>
+                    </form>
                 </div>
             </div>
-            <br/>
-            <!-- Continue to Billing Button -->
-            <button type='submit' class='btn btn-secondary'>Pay Now</button>
-                    </form>
         </div>
     </div>
 </div>
