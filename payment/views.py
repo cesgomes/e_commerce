@@ -217,4 +217,4 @@ def orders(request, pk):
 
     order = Order.objects.get(id=pk)
     orderitem = OrderItem.objects.filter(order=pk)
-    return render(request, 'payment/orders.html', {'order': order, 'item': orderitem})
+    return render(request, 'payment/orders.html', {'order': order, 'item': orderitem}) 

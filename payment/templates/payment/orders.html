@@ -24,11 +24,14 @@
                 {% endif %}
                 <br/><br/>
                 {{order.full_name}}<br/>
-                <pre>{{order.shipping_address}}</pre><br /><br />
-                Items:
+                <pre>{{order.shipping_address}}</pre>
             </div>
             </div>
+            {% for i in item %}
             
+            {{i.product}} - {{i.quantity}} - $ {{i.price}}<br/>
+
+            {% endfor %}
 
         <br /><br />
     </div>
