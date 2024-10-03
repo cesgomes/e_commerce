@@ -8,7 +8,8 @@ class ShippingAddress(models.Model):
     """
     Modelo para armazenar endereços de envio dos usuários.
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     shipping_full_name = models.CharField(max_length=255)
     shipping_email = models.EmailField(max_length=255)
     shipping_address1 = models.CharField(max_length=255)
@@ -45,10 +46,12 @@ class Order(models.Model):
         User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
+    # Consider using a ForeignKey to ShippingAddress
     shipping_address = models.TextField(max_length=1000)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
     date_ordered = models.DateField(auto_now_add=True)
     shipped = models.BooleanField(default=False)
+
     def __str__(self):
         return f'Order - {self.id}'
 
