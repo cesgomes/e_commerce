@@ -17,6 +17,7 @@ urlpatterns = [
     # URL para a página de informações de cobrança
     # Quando o usuário acessa 'billing_info/', a função 'billing_info' será chamada
     path('billing_info/', views.billing_info, name="billing_info"),
+    path('process_order/', views.process_order, name="process_order"),
 ]
 
 # Notas de melhoria:

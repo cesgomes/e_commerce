@@ -74,6 +74,10 @@ def billing_info(request):
         cart_products = cart.get_prods
         quantities = cart.get_quants
         totals = cart.cart_total()
+        
+        my_shipping = request.POST
+        request.session['my_shipping']=my_shipping
+        
         billing_form = PaymentForm()
 
         # Check if the user is authenticated
@@ -99,3 +103,15 @@ def billing_info(request):
         # If the request method is not POST, deny access and redirect to home
         messages.error(request, 'Access Denied')
         return redirect('home')
+
+def process_order(request):
+    if request.POST:
+        payment_form = PaymentForm(request.POST or None)
+        
+        my_shipping=request.session.get('my_shipping')
+        messages.success(request, "Order Placed")
+        return redirect('home')
+    else:
+        messages.success(request, "Access Denied")
+        return redirect('home')
+        
