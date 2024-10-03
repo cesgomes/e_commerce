@@ -207,7 +207,7 @@ def shipped_dash(request):
     order = Order.objects.filter(shipped=True)
     return render(request, 'payment/shipped_dash.html', {'orders': order})
 
-def orders(request):
+def orders(request, pk):
     if not request.user.is_authenticated:
         messages.error(request, "Precisa estar autenticado")
         return redirect('home')
@@ -215,5 +215,6 @@ def orders(request):
         messages.error(request, "Sem permissão para acessar esta área")
         return redirect('home')
 
-    order = Order.objects.filter(shipped=True)
-    return render(request, 'payment/orders.html', {'orders': order})
+    order = Order.objects.get(id=pk)
+    orderitem = OrderItem.objects.filter(order=pk)
+    return render(request, 'payment/orders.html', {'order': order, 'item': orderitem})
