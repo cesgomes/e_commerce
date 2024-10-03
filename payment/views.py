@@ -175,7 +175,21 @@ def process_order(request):
 
 
 def not_shipped_dash(request):
-    pass
+    if not request.user.is_authenticated: 
+        messages.error(request, "Precisa estar autenticado")
+        return redirect('home')
+    if not request.user.is_superuser:
+        messages.error(request, "Sem permissão para acessar esta área")
+        return redirect('home')
 
+    return render(request, 'payment/not_shipped_dash.html', {})
+        
 def shipped_dash(request):
-    pass
+    if not request.user.is_authenticated:
+        messages.error(request, "Precisa estar autenticado")
+        return redirect('home')
+    if not request.user.is_superuser:
+        messages.error(request, "Sem permissão para acessar esta área")
+        return redirect('home')
+
+    return render(request, 'payment/shipped_dash.html', {}) 
