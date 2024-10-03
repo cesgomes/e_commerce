@@ -9,6 +9,7 @@ admin.site.register(OrderItem)
 
 class OrderItemInline(admin.StackedInline):
     model=OrderItem
+    extra  = 0 
     
 class OrderAdmin(admin.ModelAdmin):
     model = Order
