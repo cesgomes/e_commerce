@@ -21,6 +21,8 @@ urlpatterns = [
     # URL para processar o pedido
     # Quando o usuário acessa 'process_order/', a função 'process_order' será chamada
     path('process_order/', views.process_order, name="process_order"),
+    path('shipped_dash/', views.shipped_dash, name="shipped_dash"),
+    path('not_shipped_dash/', views.not_shipped_dash, name="not_shipped_dash"),
 ]
 
 # Notas de melhoria:
