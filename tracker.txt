@@ -1,1 +1,1 @@
-Add Ship date automatically
+Shipping Dashboard
