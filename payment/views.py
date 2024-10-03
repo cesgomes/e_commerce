@@ -182,7 +182,8 @@ def not_shipped_dash(request):
         messages.error(request, "Sem permissão para acessar esta área")
         return redirect('home')
 
-    return render(request, 'payment/not_shipped_dash.html', {})
+    order = Order.objects.filter(shipped=False)
+    return render(request, 'payment/not_shipped_dash.html', {'orders':order})
         
 def shipped_dash(request):
     if not request.user.is_authenticated:
@@ -192,4 +193,5 @@ def shipped_dash(request):
         messages.error(request, "Sem permissão para acessar esta área")
         return redirect('home')
 
-    return render(request, 'payment/shipped_dash.html', {}) 
+    order = Order.objects.filter(shipped=True)
+    return render(request, 'payment/shipped_dash.html', {'orders':order}) 
