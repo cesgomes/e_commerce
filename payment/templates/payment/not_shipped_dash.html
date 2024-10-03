@@ -1,45 +1,46 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block content %}
 
 <div class="container">
-  <div class="row">
-    <!-- Centraliza o conteúdo horizontalmente -->
-    <center>
-      <div class="col-8">
-        <!-- Espaçamento vertical -->
-        <br/><br/><br/>
+  <div class="row justify-content-center"> <!-- Centraliza o conteúdo horizontalmente -->
+    <div class="col-8">
+      <!-- Espaçamento vertical usando classes do Bootstrap -->
+      <div class="my-5"></div>
 
-        <!-- Título da tabela -->
-        <h3>Not Shipped Items</h3>
-        
-        <!-- Tabela para exibir itens não enviados -->
-        <table class="table table-striped table-hover table-bordered">
-          <!-- Cabeçalho da tabela com fundo escuro -->
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">Order</th>
-              <th scope="col">Price</th>
-              <th scope="col">Customer Email</th>
-              <th scope="col">Date Ordered</th>
-            </tr>
-          </thead>
-          <!-- Corpo da tabela -->
-          <tbody class="table-group-divider">
-            <!-- Loop através dos pedidos e cria uma linha para cada item -->
-            {% for item in orders %}
-            <tr>
-              <td>{{ item.id }}</td>
-              <td>$ {{ item.amount_paid }}</td>
-              <td>{{ item.email }}</td>
-              <td>{{ item.date_ordered }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <!-- Espaçamento adicional -->
-        <br /><br />
-      </div>
-    </center>
+      <!-- Título da tabela -->
+      <h3>Not Shipped Items</h3>
+      
+      <!-- Tabela para exibir itens não enviados -->
+      <table class="table table-striped table-hover table-bordered">
+        <!-- Cabeçalho da tabela com fundo escuro -->
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Order</th>
+            <th scope="col">Price</th>
+            <th scope="col">Customer Email</th>
+            <th scope="col">Date Ordered</th>
+          </tr>
+        </thead>
+        <!-- Corpo da tabela -->
+        <tbody class="table-group-divider">
+          <!-- Loop através dos pedidos e cria uma linha para cada item -->
+          {% for item in orders %}
+          <tr>
+            <!-- Link para detalhes do pedido -->
+            <td><a href="{% url "orders" item.id %}">{{ item.id }}</a></td>
+            <!-- Exibe o preço pago -->
+            <td>$ {{ item.amount_paid }}</td>
+            <!-- Exibe o email do cliente -->
+            <td>{{ item.email }}</td>
+            <!-- Exibe a data do pedido -->
+            <td>{{ item.date_ordered }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- Espaçamento adicional usando classes do Bootstrap -->
+      <div class="my-5"></div>
+    </div>
   </div>
 </div>
 

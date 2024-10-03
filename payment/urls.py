@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.decorators import login_required
 
 # Definindo as URLs do aplicativo
 # Cada URL é mapeada para uma função específica no arquivo views.py
@@ -8,27 +9,31 @@ from . import views
 urlpatterns = [
     # URL para a página de sucesso do pagamento
     # Quando o usuário acessa 'payment_success/', a função 'payment_success' será chamada
-    path('payment_success/', views.payment_success, name="payment_success"),
+    path('payment_success/', login_required(views.payment_success), name="payment_success"),
 
     # URL para a página de checkout
     # Quando o usuário acessa 'checkout/', a função 'checkout' será chamada
-    path('checkout/', views.checkout, name="checkout"),
+    path('checkout/', login_required(views.checkout), name="checkout"),
 
     # URL para a página de informações de cobrança
     # Quando o usuário acessa 'billing_info/', a função 'billing_info' será chamada
-    path('billing_info/', views.billing_info, name="billing_info"),
+    path('billing_info/', login_required(views.billing_info), name="billing_info"),
 
     # URL para processar o pedido
     # Quando o usuário acessa 'process_order/', a função 'process_order' será chamada
-    path('process_order/', views.process_order, name="process_order"),
+    path('process_order/', login_required(views.process_order), name="process_order"),
 
     # URL para o dashboard de pedidos enviados
     # Quando o usuário acessa 'shipped_dash/', a função 'shipped_dash' será chamada
-    path('shipped_dash/', views.shipped_dash, name="shipped_dash"),
+    path('shipped_dash/', login_required(views.shipped_dash), name="shipped_dash"),
 
     # URL para o dashboard de pedidos não enviados
     # Quando o usuário acessa 'not_shipped_dash/', a função 'not_shipped_dash' será chamada
-    path('not_shipped_dash/', views.not_shipped_dash, name="not_shipped_dash"),
+    path('not_shipped_dash/', login_required(views.not_shipped_dash), name="not_shipped_dash"),
+
+    # URL para visualizar detalhes de um pedido específico
+    # O parâmetro 'pk' deve ser um inteiro
+    path('orders/<int:pk>/', login_required(views.orders), name="orders")
 ]
 
 # Notas de melhoria:
