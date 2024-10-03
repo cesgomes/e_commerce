@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from cart.cart import Cart
 from .forms import ShippingForm, PaymentForm
-from payment.models import ShippingAddress, Order
+from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib import messages
 from django.contrib.auth.models import User
-
+from store.models import Product
 
 def payment_success(request):
     """
@@ -148,6 +148,27 @@ def process_order(request):
 
         # Save the order to the database
         create_order.save()
+
+        order_id = create_order.pk
+        for product in cart_products():
+            product_id = product.id
+            price = product.sale_price if product.is_sale else product.price
+            
+            for key, value in quantities().items():
+                if int(key) == product_id:
+                    if request.user.is_authenticated:
+                        create_order_item = OrderItem(order=create_order,
+                                                      product=product,
+                                                      user=user,
+                                                      quantity=value,
+                                                      price=price)
+                    else:
+                        create_order_item = OrderItem(order=create_order,
+                                                      product=product,
+                                                      quantity=value,
+                                                      price=price)           
+                    create_order_item.save()
+
         messages.success(request, "Order Placed")
         return redirect('home')
     else:
