@@ -57,11 +57,11 @@ class Order(models.Model):
         return f'Order - {self.id}'
 
 @receiver(pre_save, sender=Order)
-def set_ship_date_on_update(sender, instance, **kwargs):
+def set_shipped_date_on_update(sender, instance, **kwargs):
     if instance.pk:
         now=datetime.datetime.now()
         obj = sender._default_manager.get(pk=instance.pk)
-        if instace.shipped and not object.shipped:
+        if instance.shipped and not obj.shipped:
             instance.date_shipped = now
 
 class OrderItem(models.Model):
