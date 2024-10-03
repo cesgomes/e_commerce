@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from store.models import Product
 
+
 def payment_success(request):
     """
     Handles the successful payment response.
@@ -77,8 +78,7 @@ def billing_info(request):
         totals = cart.cart_total()
 
         # Store shipping information in session
-        my_shipping = request.POST
-        request.session['my_shipping'] = my_shipping
+        request.session['my_shipping'] = request.POST
 
         # Initialize the billing form
         billing_form = PaymentForm()
@@ -102,10 +102,12 @@ def process_order(request):
     Processes the order by saving order details to the database and redirecting to home.
 
     Args:
-        request: The HTTP request object.
+        request: The HTTP request object containing order and session information.
 
     Returns:
         HttpResponse: Redirects to the home page after processing the order.
+                      Displays an error message and redirects to checkout if shipping information is missing.
+                      Displays an error message and redirects to home if the request method is not POST.
     """
     if request.method == "POST":
         # Get the cart instance for the current session
@@ -116,58 +118,49 @@ def process_order(request):
 
         # Retrieve shipping information from session
         my_shipping = request.session.get('my_shipping')
-        full_name = my_shipping['shipping_full_name']
-        email = my_shipping['shipping_email']
+        if not my_shipping:
+            messages.error(request, "Shipping information is missing.")
+            return redirect('checkout')
+
+        # Extract shipping details
+        full_name = my_shipping.get('shipping_full_name')
+        email = my_shipping.get('shipping_email')
         shipping_address = (
-            f"{my_shipping['shipping_address1']}\n"
-            f"{my_shipping['shipping_address2']}\n"
-            f"{my_shipping['shipping_city']}\n"
-            f"{my_shipping['shipping_state']}\n"
-            f"{my_shipping['shipping_zipcode']}\n"
-            f"{my_shipping['shipping_country']}"
+            f"{my_shipping.get('shipping_address1')}\n"
+            f"{my_shipping.get('shipping_address2')}\n"
+            f"{my_shipping.get('shipping_city')}\n"
+            f"{my_shipping.get('shipping_state')}\n"
+            f"{my_shipping.get('shipping_zipcode')}\n"
+            f"{my_shipping.get('shipping_country')}"
         )
         amount_paid = totals
 
         # Create an order instance
-        if request.user.is_authenticated:
-            user = request.user
-            create_order = Order(
-                user=user,
-                full_name=full_name,
-                email=email,
-                shipping_address=shipping_address,
-                amount_paid=amount_paid
-            )
-        else:
-            create_order = Order(
-                full_name=full_name,
-                email=email,
-                shipping_address=shipping_address,
-                amount_paid=amount_paid
-            )
-
-        # Save the order to the database
+        create_order = Order(
+            user=request.user if request.user.is_authenticated else None,
+            full_name=full_name,
+            email=email,
+            shipping_address=shipping_address,
+            amount_paid=amount_paid
+        )
         create_order.save()
 
-        order_id = create_order.pk
+        # Save each product in the order
         for product in cart_products():
             product_id = product.id
             price = product.sale_price if product.is_sale else product.price
-            
-            for key, value in quantities().items():
-                if int(key) == product_id:
-                    if request.user.is_authenticated:
-                        create_order_item = OrderItem(order=create_order,
-                                                      product=product,
-                                                      user=user,
-                                                      quantity=value,
-                                                      price=price)
-                    else:
-                        create_order_item = OrderItem(order=create_order,
-                                                      product=product,
-                                                      quantity=value,
-                                                      price=price)           
-                    create_order_item.save()
+
+            # Find the quantity for the current product
+            quantity = quantities().get(str(product_id), 0)
+            if quantity > 0:
+                create_order_item = OrderItem(
+                    order=create_order,
+                    product=product,
+                    user=request.user if request.user.is_authenticated else None,
+                    quantity=quantity,
+                    price=price
+                )
+                create_order_item.save()
 
         messages.success(request, "Order Placed")
         return redirect('home')
