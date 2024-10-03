@@ -14,6 +14,7 @@ class OrderItemInline(admin.StackedInline):
 class OrderAdmin(admin.ModelAdmin):
     model = Order
     readonly_fields = ['date_ordered']
+    #fields=['user','full_name'] Caso queira listar apenas alguns campos
     inlines=[OrderItemInline]
     
 admin.site.unregister(Order)
