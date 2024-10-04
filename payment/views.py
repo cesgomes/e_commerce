@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from cart.cart import Cart
 from .forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
+from store.models import Profile
 from datetime import datetime
 
 def is_superuser(user):
@@ -101,7 +102,14 @@ def process_order(request):
                 price=price
             )
 
-    request.session.pop('my_shipping', None)
+    for key in list(request.session.keys()):
+        if key == "session_key":
+            del request.session[key]
+            
+    if request.user.is_authenticated:
+        current_user = Profile.objects.filter(user__id=request.user.id)
+        current_user.update(old_cart=None)
+        
     messages.success(request, "Order Placed")
     return redirect('home')
 
