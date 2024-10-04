@@ -227,4 +227,14 @@ def orders(request, pk):
 
     order = get_object_or_404(Order, id=pk)
     orderitem = OrderItem.objects.filter(order=pk)
+    if request.POST:
+        status = request.POST['shipping_status']
+        order.shipped = status.lower() == 'true'
+        
+        if not order.shipped:
+            order.date_shipped = None
+        order.save()
+        messages.success(request, "Shipping Status updated")
+        return redirect('home')
+        
     return render(request, 'payment/orders.html', {'order': order, 'item': orderitem})
