@@ -2,7 +2,8 @@
 {% block content %}
 
 <div class="container">
-  <div class="row justify-content-center"> <!-- Centraliza o conteúdo horizontalmente -->
+  <!-- Centraliza o conteúdo horizontalmente -->
+  <div class="row justify-content-center">
     <div class="col-8">
       <!-- Espaçamento vertical usando classes do Bootstrap -->
       <div class="my-5"></div>
@@ -28,21 +29,25 @@
           {% for item in orders %}
           <tr>
             <!-- Link para detalhes do pedido -->
-            <td><a href="{% url "orders" item.id %}">{{ item.id }}</a></td>
+            <td><a href="{% url 'orders' item.id %}">{{ item.id }}</a></td>
             <!-- Exibe o preço pago -->
             <td>$ {{ item.amount_paid }}</td>
             <!-- Exibe o email do cliente -->
             <td>{{ item.email }}</td>
             <!-- Exibe a data do pedido -->
             <td>{{ item.date_ordered }}</td>
+            <!-- Formulário para marcar o item como enviado -->
             <td>
-                <form  method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="shipping_status" value = 'true'>
-                  <input type="hidden" name="num" value = {{item.id}}>
-                  <button type='submit' class="btn btn-success">Mark as shipped</button>
-                </form>
-              </td>
+              <form method="post">
+                {% csrf_token %}
+                <!-- Campo oculto para enviar o status de envio -->
+                <input type="hidden" name="shipping_status" value="true">
+                <!-- Campo oculto para enviar o ID do pedido -->
+                <input type="hidden" name="num" value="{{ item.id }}">
+                <!-- Botão para marcar como enviado -->
+                <button type="submit" class="btn btn-success">Mark as shipped</button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

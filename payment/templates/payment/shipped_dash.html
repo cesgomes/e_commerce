@@ -19,7 +19,7 @@
               <th scope="col">Price</th> <!-- Cabeçalho para preço -->
               <th scope="col">Customer Email</th> <!-- Cabeçalho para email do cliente -->
               <th scope="col">Date Shipped</th> <!-- Cabeçalho para data de envio -->
-              <th scope="col">Shipping Status</th>          
+              <th scope="col">Shipping Status</th> <!-- Cabeçalho para status de envio -->
             </tr>
           </thead>
           <!-- Corpo da tabela -->
@@ -28,7 +28,11 @@
             {% for item in orders %}
             <tr>
               <!-- Exibe o ID do pedido com link para detalhes do pedido -->
-              <td><a href="{% url "orders" item.id %}" aria-label="Detalhes do pedido {{ item.id }}">{{ item.id }}</a></td>
+              <td>
+                <a href="{% url "orders" item.id %}" aria-label="Detalhes do pedido {{ item.id }}">
+                  {{ item.id }}
+                </a>
+              </td>
 
               <!-- Exibe o preço pago, formatado com símbolo de dólar -->
               <td>$ {{ item.amount_paid }}</td>
@@ -36,12 +40,16 @@
               <td>{{ item.email }}</td>
               <!-- Exibe a data de envio -->
               <td>{{ item.date_shipped }}</td>
+              <!-- Formulário para alterar o status de envio -->
               <td>
-                <form  method="post">
+                <form method="post">
                   {% csrf_token %}
-                  <input type="hidden" name="shipping_status" value = 'false'>
-                  <input type="hidden" name="num" value = {{item.id}}>
-                  <button type='submit' class="btn btn-danger">Mark not as shipped</button>
+                  <!-- Campo oculto para enviar o status de envio -->
+                  <input type="hidden" name="shipping_status" value="false">
+                  <!-- Campo oculto para enviar o ID do pedido -->
+                  <input type="hidden" name="num" value="{{ item.id }}">
+                  <!-- Botão para marcar como não enviado -->
+                  <button type="submit" class="btn btn-danger">Mark not as shipped</button>
                 </form>
               </td>
             </tr>

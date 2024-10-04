@@ -2,56 +2,66 @@
 {% block content %}
 
 <div class="container">
-  <div class="row justify-content-center"> <!-- Use 'justify-content-center' para centralizar -->
-    <div class="col-8">
-      <!-- Espaçamento vertical -->
-      <div class="my-4"></div> <!-- Use classes Bootstrap para espaçamento -->
+  <div class="row justify-content-center"> <!-- Centraliza o conteúdo horizontalmente -->
+    <div class="col-8"> <!-- Define a largura da coluna -->
+      <!-- Espaçamento vertical superior -->
+      <div class="my-4"></div> <!-- Classe Bootstrap para espaçamento vertical -->
       
-      <!-- Título da tabela -->
+      <!-- Título da seção de pedidos -->
       <h3>Order</h3>        
           
       <div class="card">
         <div class="card-header">
           <!-- Exibe o ID do pedido e o valor pago -->
-          Order: {{order.id}} - $ {{order.amount_paid}}
+          <strong>Order:</strong> {{order.id}} - <strong>$</strong> {{order.amount_paid}}
         </div>
         <div class="card-body">
           <!-- Exibe o email do cliente -->
-          Email: {{order.email}}<br/>
+          <strong>Email:</strong> {{order.email}}<br/>
           
-          <!-- Verifica se a data de envio está disponível -->
+          <!-- Verifica se a data de envio está disponível e exibe a data correspondente -->
           {% if order.date_shipped %}
-          Date Shipped: {{order.date_shipped}}
+          <strong>Date Shipped:</strong> {{order.date_shipped}}
           {% else %}
-          Date Ordered: {{order.date_ordered}}
+          <strong>Date Ordered:</strong> {{order.date_ordered}}
           {% endif %}
           <br/><br/>
           
-          <!-- Exibe o nome completo e o endereço de entrega -->
-          {{order.full_name}}<br/>
-          <pre>{{order.shipping_address}}</pre>
+          <!-- Exibe o nome completo e o endereço de entrega do cliente -->
+          <strong>{{order.full_name}}</strong><br/>
+          <pre>{{order.shipping_address}}</pre> <!-- Mantém a formatação do endereço -->
         </div>
       </div>
       
       <!-- Lista de itens do pedido -->
-      {% for i in item %}
-      {{i.product}} - {{i.quantity}} - $ {{i.price}}<br/>
+      <div class="my-4"></div> <!-- Espaçamento entre a lista de itens e o cartão -->
+      <h4>Items</h4>
+      {% for i in items %}
+      <div>
+        <strong>Product:</strong> {{i.product}} - 
+        <strong>Quantity:</strong> {{i.quantity}} - 
+        <strong>Price:</strong> $ {{i.price}}
+      </div>
       {% endfor %}
       <br/><br/>
+      
+      <!-- Formulário para atualizar o status de envio do pedido -->
       {% if order.shipped %}
       <form method="post">
         {% csrf_token %}
-        <input type="hidden" name="shipping_status" value = 'false'>
+        <input type="hidden" name="shipping_status" value='false'>
         <button type='submit' class="btn btn-danger">Mark not as shipped</button>
       </form>
       {% else %}
       <form method="post">
         {% csrf_token %}
-        <input type="hidden" name="shipping_status" value = 'true'>
+        <input type="hidden" name="shipping_status" value='true'>
         <button type='submit' class="btn btn-success">Mark as shipped</button>
       </form>
-        {% endif %}
-      <div class="my-4"></div> <!-- Espaçamento adicional -->
+      {% endif %}
+      
+      <!-- Espaçamento vertical inferior -->
+      <div class="my-4"></div> <!-- Classe Bootstrap para espaçamento vertical -->
     </div>
   </div>
 </div>
