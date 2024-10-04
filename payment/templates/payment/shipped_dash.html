@@ -19,6 +19,7 @@
               <th scope="col">Price</th> <!-- Cabeçalho para preço -->
               <th scope="col">Customer Email</th> <!-- Cabeçalho para email do cliente -->
               <th scope="col">Date Shipped</th> <!-- Cabeçalho para data de envio -->
+              <th scope="col">Shipping Status</th>          
             </tr>
           </thead>
           <!-- Corpo da tabela -->
@@ -35,6 +36,14 @@
               <td>{{ item.email }}</td>
               <!-- Exibe a data de envio -->
               <td>{{ item.date_shipped }}</td>
+              <td>
+                <form  method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="shipping_status" value = 'false'>
+                  <input type="hidden" name="num" value = {{item.id}}>
+                  <button type='submit' class="btn btn-danger">Mark not as shipped</button>
+                </form>
+              </td>
             </tr>
             {% endfor %}
           </tbody>

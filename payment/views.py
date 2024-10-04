@@ -5,7 +5,7 @@ from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib import messages
 from django.contrib.auth.models import User
 from store.models import Product
-
+from datetime import datetime
 def payment_success(request):
     """
     Handles the successful payment response.
@@ -184,6 +184,12 @@ def not_shipped_dash(request):
         messages.error(request, "Sem permissão para acessar esta área")
         return redirect('home')
 
+    if request.POST:
+        num = request.POST['num']
+        order = Order.objects.filter(id=num)
+        order.update(shipped=True, date_shipped=datetime.now())
+        messages.success(request, "Shipping Status updated")
+
     order = Order.objects.filter(shipped=False)
     return render(request, 'payment/not_shipped_dash.html', {'orders': order})
 
@@ -203,6 +209,14 @@ def shipped_dash(request):
     if not request.user.is_superuser:
         messages.error(request, "Sem permissão para acessar esta área")
         return redirect('home')
+
+    if request.POST:
+        num = request.POST['num']
+        order = Order.objects.filter(id=num)
+        order.update(shipped=False, date_shipped=None)
+        messages.success(request, "Shipping Status updated")
+
+
 
     order = Order.objects.filter(shipped=True)
     return render(request, 'payment/shipped_dash.html', {'orders': order})
