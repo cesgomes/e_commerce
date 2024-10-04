@@ -8,12 +8,19 @@ from store.models import Profile
 from datetime import datetime
 
 def is_superuser(user):
+    """Check if the user is a superuser."""
     return user.is_superuser
 
 def payment_success(request):
+    """Render the payment success page."""
     return render(request, "payment/payment_success.html")
 
 def checkout(request):
+    """
+    Handle the checkout process.
+
+    Retrieves the cart details and displays the checkout page with the shipping form.
+    """
     cart = Cart(request)
     cart_products = cart.get_prods
     quantities = cart.get_quants
@@ -33,6 +40,11 @@ def checkout(request):
     })
 
 def billing_info(request):
+    """
+    Handle the billing information process.
+
+    Validates the request method and displays the billing information page.
+    """
     if request.method != "POST":
         messages.error(request, 'Access Denied')
         return redirect('home')
@@ -54,6 +66,12 @@ def billing_info(request):
     })
 
 def process_order(request):
+    """
+    Process the order after billing information is submitted.
+
+    Validates the request method, retrieves shipping information, creates an order,
+    and clears the session.
+    """
     if request.method != "POST":
         messages.error(request, "Access Denied")
         return redirect('home')
@@ -102,6 +120,7 @@ def process_order(request):
                 price=price
             )
 
+    # Clear session keys
     for key in list(request.session.keys()):
         if key == "session_key":
             del request.session[key]
@@ -116,6 +135,11 @@ def process_order(request):
 @login_required
 @user_passes_test(is_superuser)
 def not_shipped_dash(request):
+    """
+    Display and update the dashboard for orders not yet shipped.
+
+    Allows superusers to mark orders as shipped.
+    """
     if request.method == "POST":
         num = request.POST['num']
         Order.objects.filter(id=num).update(shipped=True, date_shipped=datetime.now())
@@ -127,6 +151,11 @@ def not_shipped_dash(request):
 @login_required
 @user_passes_test(is_superuser)
 def shipped_dash(request):
+    """
+    Display and update the dashboard for shipped orders.
+
+    Allows superusers to mark orders as not shipped.
+    """
     if request.method == "POST":
         num = request.POST['num']
         Order.objects.filter(id=num).update(shipped=False, date_shipped=None)
@@ -138,6 +167,11 @@ def shipped_dash(request):
 @login_required
 @user_passes_test(is_superuser)
 def orders(request, pk):
+    """
+    Display and update the details of a specific order.
+
+    Allows superusers to update the shipping status of an order.
+    """
     order = get_object_or_404(Order, id=pk)
     order_items = OrderItem.objects.filter(order=pk)
 
